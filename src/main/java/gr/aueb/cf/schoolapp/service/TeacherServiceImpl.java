@@ -69,13 +69,34 @@ public class TeacherServiceImpl implements ITeacherService {
     }
 
     @Override
-    public Teacher getTeacherById(Integer id) throws TeacherNotFoundException, TeacherDAOException {
-        return null;
+    public Teacher getTeacherById(Integer id)
+            throws TeacherNotFoundException, TeacherDAOException {
+        Teacher teacher;
+
+        try {
+            teacher = teacherDAO.getById(id);
+            if (teacher == null) {
+                throw new TeacherNotFoundException("Teacher with id: " + id + "not found");
+            }
+            return teacher;
+        } catch (TeacherDAOException | TeacherNotFoundException e) {
+            e.printStackTrace();
+            // rollback
+            throw e;
+        }
     }
 
     @Override
     public List<Teacher> getTeachersByLastname(String lastname) throws TeacherDAOException {
-        return null;
+        List<Teacher> teachers;
+
+        try {
+            teachers = teacherDAO.getByLastname(lastname);
+            return teachers;
+        } catch (TeacherDAOException e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     private Teacher mapToTeacher(TeacherInsertDTO dto) {
