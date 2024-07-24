@@ -13,8 +13,8 @@ public class DBUtil {
 	static {
 		ds.setUrl("jdbc:mysql://localhost:3306/school6db?serverTimeZone=UTC");
 		ds.setUsername("userdb6");
-		//ds.setPassword(System.getenv("PASS_DB6"));	
-		ds.setPassword("12345");
+		ds.setPassword(System.getenv("PASS_DB6"));
+		//ds.setPassword("12345");
 		ds.setInitialSize(10);
 		ds.setMaxTotal(50);
 		ds.setMinIdle(8);
