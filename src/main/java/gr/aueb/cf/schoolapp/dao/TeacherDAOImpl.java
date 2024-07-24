@@ -6,6 +6,7 @@ import gr.aueb.cf.schoolapp.service.util.DBUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -52,6 +53,10 @@ public class TeacherDAOImpl implements ITeacherDAO {
             ps.setInt(3, id);
 
             int n = ps.executeUpdate();
+
+//            if (n == 0) {
+//                return null;
+//            }
             // logging
             return teacher; // TBD
         } catch (SQLException e) {
@@ -71,7 +76,6 @@ public class TeacherDAOImpl implements ITeacherDAO {
             ps.setInt(1, id);
             ps.executeUpdate();
             // logging
-
         } catch (SQLException e) {
             e.printStackTrace();
             // logging
@@ -81,7 +85,29 @@ public class TeacherDAOImpl implements ITeacherDAO {
 
     @Override
     public Teacher getById(Integer id) throws TeacherDAOException {
-        return null;
+        String sql = "SELECT * FROM teachers WHERE id = ?";
+        Teacher teacher = null;
+        ResultSet rs;
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                teacher = new Teacher(
+                        rs.getInt("id"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname")
+                );
+            }
+            return teacher;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // logging
+            throw new TeacherDAOException("SQL error in get by id with id: " + id);
+        }
     }
 
     @Override
