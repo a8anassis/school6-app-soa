@@ -113,7 +113,7 @@ public class TeacherDAOImpl implements ITeacherDAO {
 
     @Override
     public List<Teacher> getByLastname(String lastname) throws TeacherDAOException {
-        List<Teacher> teachers = new ArrayList<>();
+        List<Teacher> teachers = new ArrayList<>(); // isEmpty == true
         ResultSet rs;
         String sql = "SELECT * FROM teachers WHERE lastname LIKE ?";
 
