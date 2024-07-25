@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JFrame;
@@ -21,10 +22,13 @@ import gr.aueb.cf.schoolapp.dao.ITeacherDAO;
 import gr.aueb.cf.schoolapp.dao.TeacherDAOImpl;
 import gr.aueb.cf.schoolapp.dao.exceptions.TeacherDAOException;
 import gr.aueb.cf.schoolapp.dto.TeacherReadOnlyDTO;
+import gr.aueb.cf.schoolapp.dto.TeacherUpdateDTO;
 import gr.aueb.cf.schoolapp.model.Teacher;
 import gr.aueb.cf.schoolapp.service.ITeacherService;
 import gr.aueb.cf.schoolapp.service.TeacherServiceImpl;
+import gr.aueb.cf.schoolapp.service.exceptions.TeacherNotFoundException;
 import gr.aueb.cf.schoolapp.service.util.DBUtil;
+import gr.aueb.cf.schoolapp.validator.TeacherValidator;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -220,41 +224,36 @@ public class TeachersUpdateDeleteFrame extends JFrame {
 		updateBtn = new JButton("Ενημέρωση");
 		updateBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Map<String, String> errors;
+				String firstnameMessage;
+				String lastnameMessage;
+				Teacher teacher;
+
+				if (!idText.getText().trim().isEmpty()) return;
 				
-				// Data Binding
-				// ToDo if (!idText.getText().trim().isEmpty()) do; else return; 
-				int inputId = Integer.parseInt(idText.getText().trim());
-				String inputFirstname = firstnameText.getText().trim();
-				String inputLastname = lastnameText.getText().trim();
-				
-				// Validation
-				validateFirstname(inputFirstname);
-				validateLastname(inputLastname);
-				
-				if (inputFirstname.isEmpty() || inputLastname.isEmpty()) {
-					return;
-				}
-				
-				String sql = "UPDATE teachers SET firstname = ?, lastname = ? WHERE id = ?";
-				try (Connection conn = DBUtil.getConnection();
-						PreparedStatement ps = conn.prepareStatement(sql)) {
-					
-					ps.setString(1, inputFirstname);
-					ps.setString(2, inputLastname);
-					ps.setInt(3, inputId);
-					
-					int answer = JOptionPane.showConfirmDialog(null, "Είστε σίγουρη/ος", "Ενημέρωση", 
-							JOptionPane.YES_NO_OPTION);
-					if (answer == JOptionPane.YES_OPTION) {
-						int rowsAffected = ps.executeUpdate();
-						JOptionPane.showMessageDialog(null, rowsAffected + " γρααμμή/ες ενημερώθηκαν", "Ενημέρωση", 
-								JOptionPane.INFORMATION_MESSAGE);
-					} else {
+				try {
+					TeacherUpdateDTO updateDTO = new TeacherUpdateDTO();
+					updateDTO.setId(Integer.parseInt(idText.getText().trim()));
+					updateDTO.setFirstname(firstnameText.getText().trim());
+					updateDTO.setLastname(lastnameText.getText().trim());
+
+					errors = TeacherValidator.validate(updateDTO);
+
+					if (!errors.isEmpty()) {
+						firstnameMessage = errors.getOrDefault("firstname", "");
+						lastnameMessage = errors.getOrDefault("lastname", "");
+						errorFirstname.setText(firstnameMessage);
+						errorLastname.setText(lastnameMessage);
 						return;
-					}		
-				} catch (SQLException e1) {
+					}
+					teacher = teacherService.updateTeacher(updateDTO);
+					TeacherReadOnlyDTO readOnlyDTO = mapToReadOnlyDTO(teacher);
+
+					JOptionPane.showMessageDialog(null, "Teacher with id: " + readOnlyDTO.getId() + " was updated", "Update",
+							JOptionPane.INFORMATION_MESSAGE);
+				} catch (TeacherDAOException | TeacherNotFoundException e1) {
 					//e1.printStackTrace();
-					JOptionPane.showMessageDialog(null,  "Insertion error", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,  e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}
