@@ -47,6 +47,7 @@ public class TeacherServiceImpl implements ITeacherService {
             return teacherDAO.update(teacher);
         } catch (TeacherDAOException | TeacherNotFoundException e) {
             e.printStackTrace();
+            // logging
             // rollback
             throw e;
         }

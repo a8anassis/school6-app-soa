@@ -33,6 +33,8 @@ public class TeacherValidator<T> {
             errors.put("lastname", "lastname should not include whitespaces");
         }
 
+        // logic validation
+
         return errors;
     }
 }
