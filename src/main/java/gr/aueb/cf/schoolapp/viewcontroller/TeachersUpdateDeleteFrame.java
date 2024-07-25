@@ -82,6 +82,7 @@ public class TeachersUpdateDeleteFrame extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
+				lastnameSearchText.setText("");
 				buildTable();	// initial rendering
 				idText.setText("");
 				firstnameText.setText("");
@@ -89,6 +90,7 @@ public class TeachersUpdateDeleteFrame extends JFrame {
 			}
 			@Override
 			public void windowActivated(WindowEvent e) {
+				lastnameSearchText.setText("");
 				buildTable();	// refresh after update / delete
 				idText.setText("");
 				firstnameText.setText("");
