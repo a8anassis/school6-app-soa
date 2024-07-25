@@ -163,17 +163,19 @@ public class TeachersInsertFrame extends JFrame {
 						firstnameMessage = errors.getOrDefault("firstname", "");
 						lastnameMessage = errors.containsKey("lastname") ? errors.get("lastname") : "";
 
-						if (!firstnameMessage.isEmpty()) {
-							errorFirstname.setText(firstnameMessage);
-						}
+//						if (!firstnameMessage.isEmpty()) {
+//							errorFirstname.setText(firstnameMessage);
+//						}
+
+						errorFirstname.setText(firstnameMessage);
 
 						if (!lastnameMessage.isEmpty()) {
 							errorLastname.setText(lastnameMessage);
 						}
 
-						if (firstnameMessage.isEmpty()) {
-							errorFirstname.setText("");
-						}
+//						if (firstnameMessage.isEmpty()) {
+//							errorFirstname.setText("");
+//						}
 
 						if (lastnameMessage.isEmpty()) {
 							errorLastname.setText("");
@@ -189,7 +191,7 @@ public class TeachersInsertFrame extends JFrame {
 							"Insert Teacher", JOptionPane.INFORMATION_MESSAGE);
 
 				} catch (TeacherDAOException ex) {
-					ex.printStackTrace();
+					//ex.printStackTrace();
 					JOptionPane.showMessageDialog(null, "Insertion Error", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
