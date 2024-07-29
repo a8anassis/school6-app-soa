@@ -26,7 +26,7 @@ public class TeacherServiceImpl implements ITeacherService {
             teacher = mapToTeacher(dto);
             return teacherDAO.insert(teacher);
         } catch (TeacherDAOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             // rollback
             throw e;
         }
@@ -46,7 +46,7 @@ public class TeacherServiceImpl implements ITeacherService {
 
             return teacherDAO.update(teacher);
         } catch (TeacherDAOException | TeacherNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             // logging
             // rollback
             throw e;
@@ -63,7 +63,7 @@ public class TeacherServiceImpl implements ITeacherService {
             }
             teacherDAO.delete(id);
         } catch (TeacherDAOException | TeacherNotFoundException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
             // rollback
             throw e;
         }
@@ -81,7 +81,7 @@ public class TeacherServiceImpl implements ITeacherService {
             }
             return teacher;
         } catch (TeacherDAOException | TeacherNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             // rollback
             throw e;
         }
@@ -95,7 +95,7 @@ public class TeacherServiceImpl implements ITeacherService {
             teachers = teacherDAO.getByLastname(lastname);
             return teachers;
         } catch (TeacherDAOException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
             throw e;
         }
     }
