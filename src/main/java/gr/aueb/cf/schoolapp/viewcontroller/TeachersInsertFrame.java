@@ -161,25 +161,10 @@ public class TeachersInsertFrame extends JFrame {
 
 					if (!errors.isEmpty()) {
 						firstnameMessage = errors.getOrDefault("firstname", "");
-						lastnameMessage = errors.containsKey("lastname") ? errors.get("lastname") : "";
-
-//						if (!firstnameMessage.isEmpty()) {
-//							errorFirstname.setText(firstnameMessage);
-//						}
+						lastnameMessage = errors.getOrDefault("lastname", "");
 
 						errorFirstname.setText(firstnameMessage);
-
-						if (!lastnameMessage.isEmpty()) {
-							errorLastname.setText(lastnameMessage);
-						}
-
-//						if (firstnameMessage.isEmpty()) {
-//							errorFirstname.setText("");
-//						}
-
-						if (lastnameMessage.isEmpty()) {
-							errorLastname.setText("");
-						}
+						errorLastname.setText(lastnameMessage);
 
 						return;
 					}
